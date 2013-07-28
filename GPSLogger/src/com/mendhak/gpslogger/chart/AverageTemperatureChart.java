@@ -57,7 +57,8 @@ public class AverageTemperatureChart extends AbstractChart
      *
      * @return the chart name
      */
-    public String getName() {
+    public String getName()
+    {
         return "Average temperature";
     }
 
@@ -66,7 +67,8 @@ public class AverageTemperatureChart extends AbstractChart
      *
      * @return the chart description
      */
-    public String getDesc() {
+    public String getDesc()
+    {
         return "The average temperature in 4 Greek islands (line chart)";
     }
 
@@ -76,51 +78,74 @@ public class AverageTemperatureChart extends AbstractChart
      * @param context the context
      * @return the built intent
      */
-    public GraphicalView execute(Context context) {
+    public GraphicalView execute(Context context)
+    {
 
 
-
-
-
-
-
-        String[] titles = new String[] { "Inside" };
+        String[] titles = new String[]{"Inside"};
         long now = Math.round(new Date().getTime() / DAY) * DAY;
         List<Date[]> x = new ArrayList<Date[]>();
-        for (int i = 0; i < titles.length; i++) {
+        for (int i = 0; i < titles.length; i++)
+        {
 //            Date[] dates = new Date[HOURS];
 //            for (int j = 0; j < HOURS; j++) {
 //                dates[j] = new Date(now - (HOURS - j) * HOUR);
 //            }
-            x.add(new Date[] {new Date(1375003091),new Date(1375004091),new Date(1375005091),new Date(1375006091),new Date(1375007091),
-                    new Date(1375008091),new Date(1375009091),new Date(1375010091),new Date(1375011091),new Date(1375012091),
-                    new Date(1375013091),new Date(1375014091),new Date(1375015091),new Date(1375016091),new Date(1375017091),
-                    new Date(1375018091),new Date(1375019091),new Date(1375020091),new Date(1375021091),new Date(1375022091)});
+            x.add(new Date[]{
+                    new Date(1373120442000L),
+                    new Date(1373120442000L),
+                    new Date(1373120502000L),
+                    new Date(1373120562000L),
+                    new Date(1373120602000L),
+                    new Date(1373120622000L),
+                    new Date(1373120641000L),
+                    new Date(1373120647000L),
+                    new Date(1373120652000L),
+                    new Date(1373122018000L),
+                    new Date(1373122021000L),
+                    new Date(1373122024000L),
+                    new Date(1373122028000L)
+            });
         }
         List<double[]> values = new ArrayList<double[]>();
 
-        values.add(new double[] { 21.2, 21.5, 21.7, 21.5, 21.4, 21.2, 21.5, 21.7, 21.5, 21.4, 21.2, 21.5, 21.7, 21.5, 21.4, 21.2, 21.5, 21.7, 21.5, 21.4 });
+        values.add(new double[]{
+                76.5999984741211,
+                76.0999984741211,
+                74.80000305175781,
+                81.30000305175781,
+                82.19999694824219,
+                81.5,
+                81.19999694824219,
+                81.19999694824219,
+                84.0,
+                81.9000015258789,
+                83.4000015258789,
+                78.5999984741211,
+                77.29183
+        });
         //, 21.4, 21.3, 21.1, 20.6, 20.3, 20.2,
-         //       19.9, 19.7, 19.6, 19.9, 20.3, 20.6, 20.9, 21.2, 21.6, 21.9, 22.1, 21.7, 21.5 });
+        //       19.9, 19.7, 19.6, 19.9, 20.3, 20.6, 20.9, 21.2, 21.6, 21.9, 22.1, 21.7, 21.5 });
 //        values.add(new double[] { 1.9, 1.2, 0.9, 0.5, 0.1, -0.5, -0.6, MathHelper.NULL_VALUE,
 //                MathHelper.NULL_VALUE, -1.8, -0.3, 1.4, 3.4, 4.9, 7.0, 6.4, 3.4, 2.0, 1.5, 0.9, -0.5,
 //                MathHelper.NULL_VALUE, -1.9, -2.5, -4.3 });
 
-        int[] colors = new int[] { Color.GREEN};
-        PointStyle[] styles = new PointStyle[] { PointStyle.CIRCLE };
+        int[] colors = new int[]{Color.GREEN};
+        PointStyle[] styles = new PointStyle[]{PointStyle.CIRCLE};
         XYMultipleSeriesRenderer renderer = buildRenderer(colors, styles);
         int length = renderer.getSeriesRendererCount();
-        for (int i = 0; i < length; i++) {
+        for (int i = 0; i < length; i++)
+        {
             ((XYSeriesRenderer) renderer.getSeriesRendererAt(i)).setFillPoints(true);
         }
         setChartSettings(renderer, "Altitude over time", null, "Meters",
-                x.get(0)[0].getTime(), x.get(0)[4].getTime(), -5, 25, Color.LTGRAY, Color.LTGRAY);
+                x.get(0)[0].getTime(), x.get(0)[x.get(0).length-1].getTime(), 50, 100, Color.LTGRAY, Color.LTGRAY);
         renderer.setXLabels(10);
         renderer.setYLabels(10);
         renderer.setShowGrid(true);
         renderer.setShowLegend(false);
         renderer.setXLabelsAlign(Align.CENTER);
-        renderer.setXLabelsAngle(125);
+        renderer.setXLabelsAngle(77);
         renderer.setYLabelsAlign(Align.RIGHT);
 
         XYMultipleSeriesDataset dataset = buildDateDataset(titles, x, values);
@@ -130,27 +155,27 @@ public class AverageTemperatureChart extends AbstractChart
 //        double maxY = dataset.getSeries()[0].getMinY();
 //        double minY = dataset.getSeries()[0].getMaxY();
 //
-        renderer.setRange(new double[] { 1375018091, 1375032091, 10, 30 });
+        renderer.setRange(new double[]{x.get(0)[0].getTime(), x.get(0)[x.get(0).length-1].getTime(), 10, 180});
 
 
-
-        switch (context.getResources().getDisplayMetrics().densityDpi) {
+        switch (context.getResources().getDisplayMetrics().densityDpi)
+        {
             case DisplayMetrics.DENSITY_XHIGH:
-                renderer.setMargins(new int[] { 40, 90, 25, 10 });
+                renderer.setMargins(new int[]{40, 90, 25, 10});
                 renderer.setAxisTitleTextSize(TEXT_SIZE_XHDPI);
                 renderer.setChartTitleTextSize(TEXT_SIZE_XHDPI);
                 renderer.setLabelsTextSize(TEXT_SIZE_XHDPI);
                 renderer.setLegendTextSize(TEXT_SIZE_XHDPI);
                 break;
             case DisplayMetrics.DENSITY_HIGH:
-                renderer.setMargins(new int[] { 30, 50, 20, 10 });
+                renderer.setMargins(new int[]{30, 50, 20, 10});
                 renderer.setAxisTitleTextSize(TEXT_SIZE_HDPI);
                 renderer.setChartTitleTextSize(TEXT_SIZE_HDPI);
                 renderer.setLabelsTextSize(TEXT_SIZE_HDPI);
                 renderer.setLegendTextSize(TEXT_SIZE_HDPI);
                 break;
             default:
-                renderer.setMargins(new int[] { 30, 50, 20, 10 });
+                renderer.setMargins(new int[]{30, 50, 20, 10});
                 renderer.setAxisTitleTextSize(TEXT_SIZE_LDPI);
                 renderer.setChartTitleTextSize(TEXT_SIZE_LDPI);
                 renderer.setLabelsTextSize(TEXT_SIZE_LDPI);
@@ -162,9 +187,8 @@ public class AverageTemperatureChart extends AbstractChart
 //                renderer, "h:mm a");
 //
 
-        return ChartFactory.getTimeChartView(context, dataset, renderer, "h:mm a");
+        return ChartFactory.getTimeChartView(context, dataset, renderer, "H:mm");
     }
-
 
 
 }
