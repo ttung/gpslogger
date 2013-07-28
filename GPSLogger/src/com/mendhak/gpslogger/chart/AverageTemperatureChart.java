@@ -87,10 +87,7 @@ public class AverageTemperatureChart extends AbstractChart
         List<Date[]> x = new ArrayList<Date[]>();
         for (int i = 0; i < titles.length; i++)
         {
-//            Date[] dates = new Date[HOURS];
-//            for (int j = 0; j < HOURS; j++) {
-//                dates[j] = new Date(now - (HOURS - j) * HOUR);
-//            }
+
             x.add(new Date[]{
                     new Date(1373120442000L),
                     new Date(1373120442000L),
@@ -124,11 +121,7 @@ public class AverageTemperatureChart extends AbstractChart
                 78.5999984741211,
                 77.29183
         });
-        //, 21.4, 21.3, 21.1, 20.6, 20.3, 20.2,
-        //       19.9, 19.7, 19.6, 19.9, 20.3, 20.6, 20.9, 21.2, 21.6, 21.9, 22.1, 21.7, 21.5 });
-//        values.add(new double[] { 1.9, 1.2, 0.9, 0.5, 0.1, -0.5, -0.6, MathHelper.NULL_VALUE,
-//                MathHelper.NULL_VALUE, -1.8, -0.3, 1.4, 3.4, 4.9, 7.0, 6.4, 3.4, 2.0, 1.5, 0.9, -0.5,
-//                MathHelper.NULL_VALUE, -1.9, -2.5, -4.3 });
+
 
         int[] colors = new int[]{Color.GREEN};
         PointStyle[] styles = new PointStyle[]{PointStyle.CIRCLE};
@@ -150,11 +143,7 @@ public class AverageTemperatureChart extends AbstractChart
 
         XYMultipleSeriesDataset dataset = buildDateDataset(titles, x, values);
 
-//        double maxX = dataset.getSeries()[0].getMaxX();
-//        double minX = maxX - 25; // deltaX is your required x-range
-//        double maxY = dataset.getSeries()[0].getMinY();
-//        double minY = dataset.getSeries()[0].getMaxY();
-//
+
         renderer.setRange(new double[]{x.get(0)[0].getTime(), x.get(0)[x.get(0).length-1].getTime(), 10, 180});
 
 

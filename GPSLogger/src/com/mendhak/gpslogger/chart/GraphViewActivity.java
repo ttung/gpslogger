@@ -20,10 +20,17 @@ import android.content.Intent;
 import android.app.Activity;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.view.MotionEvent;
+import android.view.View;
+
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.MenuItem;
+
 import com.mendhak.gpslogger.GpsMainActivity;
 import com.mendhak.gpslogger.R;
 import com.mendhak.gpslogger.common.Utilities;
@@ -41,10 +48,24 @@ public class GraphViewActivity extends SherlockActivity
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.graph);
-
         // enable the home button so you can go back to the main screen
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().hide();
+
+
+//        this.requestWindowFeature(com.actionbarsherlock.view.Window.FEATURE_ACTION_BAR );
+//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+//                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        //requestWindowFeature(com.actionbarsherlock.view.Window.FEATURE_ACTION_BAR_OVERLAY );
+        //requestWindowFeature(com.actionbarsherlock.view.Window.FEATURE_ACTION_BAR_OVERLAY | Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().getDecorView()
+                .setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+
+        setContentView(R.layout.graph);
+
     }
 
     /**
@@ -76,10 +97,65 @@ public class GraphViewActivity extends SherlockActivity
             mChartView = (new AverageTemperatureChart()).execute(this);
             layout.addView(mChartView, new ActionBar.LayoutParams
                     (ActionBar.LayoutParams.FILL_PARENT, ActionBar.LayoutParams.FILL_PARENT));
-
         } else {
             mChartView.repaint();
         }
+
+        mChartView.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
+            @Override
+            public void onSystemUiVisibilityChange(int vis) {
+
+                if(vis == 0){
+
+                    Thread t = new Thread(new Runnable()
+                    {
+                        @Override
+                        public void run()
+                        {
+                            runOnUiThread(showNav);
+                            try
+                            {
+                                Thread.sleep(4000);
+                            }
+                            catch (InterruptedException e)
+                            {
+                                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                            }
+
+                            runOnUiThread(hideNavAgain);
+                        }
+                    });
+
+                    t.start();
+
+                }
+
+            }
+        });
+
     }
+
+
+    Runnable hideNavAgain = new Runnable()
+    {
+        @Override
+        public void run()
+        {
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+            getSupportActionBar().hide();
+        }
+    };
+
+    Runnable showNav = new Runnable()
+    {
+        @Override
+        public void run()
+        {
+
+            getSupportActionBar().show();
+            //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+    };
+
 
 }
