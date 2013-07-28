@@ -13,6 +13,16 @@
     <packaging>apk</packaging>
     <name>GPS Logger Android Application</name>
 
+
+    <repositories>
+        <repository>
+            <id>achartengine</id>
+            <name>Public AChartEngine repository</name>
+            <url>https://repository-achartengine.forge.cloudbees.com/snapshot/</url>
+        </repository>
+    </repositories>
+
+
     <dependencies>
 
         <dependency>
@@ -60,6 +70,12 @@
             <version>1.4.1</version>
             <scope>system</scope>
             <systemPath>${project.basedir}/libs/android-async-http-1.4.1.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>org.achartengine</groupId>
+            <artifactId>achartengine</artifactId>
+            <version>1.1.0</version>
         </dependency>
 
         <dependency>

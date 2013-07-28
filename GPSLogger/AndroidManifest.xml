@@ -90,6 +90,18 @@
             </intent-filter>
         </activity>
 
+
+        <activity android:name=".chart.GraphViewActivity"
+                  android:label="@string/graph_title">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <action android:name="com.mendhak.gpslogger.CHART"/>
+            </intent-filter>
+        </activity>
+        <activity android:name="org.achartengine.GraphicalActivity" />
         <activity android:name="com.mendhak.gpslogger.senders.email.AutoEmailActivity"
                   android:label="@string/autoemail_title" android:screenOrientation="portrait">
             <intent-filter>
