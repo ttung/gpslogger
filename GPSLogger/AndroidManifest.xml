@@ -92,7 +92,7 @@
 
 
         <activity android:name=".chart.GraphViewActivity"
-                  android:label="@string/graph_title">
+                  android:label="@string/graph_title" android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <action android:name="android.intent.action.VIEW"/>

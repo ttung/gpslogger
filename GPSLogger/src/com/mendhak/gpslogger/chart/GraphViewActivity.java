@@ -53,16 +53,14 @@ public class GraphViewActivity extends SherlockActivity
         getSupportActionBar().hide();
 
 
-//        this.requestWindowFeature(com.actionbarsherlock.view.Window.FEATURE_ACTION_BAR );
-//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-//                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
+            //requestWindowFeature(com.actionbarsherlock.view.Window.FEATURE_ACTION_BAR_OVERLAY | com.actionbarsherlock.view.Window.FEATURE_NO_TITLE);
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            getWindow().getDecorView()
+                    .setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
 
-        //requestWindowFeature(com.actionbarsherlock.view.Window.FEATURE_ACTION_BAR_OVERLAY );
-        //requestWindowFeature(com.actionbarsherlock.view.Window.FEATURE_ACTION_BAR_OVERLAY | Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        getWindow().getDecorView()
-                .setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+        }
 
         setContentView(R.layout.graph);
 
@@ -101,37 +99,41 @@ public class GraphViewActivity extends SherlockActivity
             mChartView.repaint();
         }
 
-        mChartView.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
-            @Override
-            public void onSystemUiVisibilityChange(int vis) {
 
-                if(vis == 0){
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
 
-                    Thread t = new Thread(new Runnable()
-                    {
-                        @Override
-                        public void run()
+            mChartView.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
+                @Override
+                public void onSystemUiVisibilityChange(int vis) {
+
+                    if(vis == 0){
+
+                        Thread t = new Thread(new Runnable()
                         {
-                            runOnUiThread(showNav);
-                            try
+                            @Override
+                            public void run()
                             {
-                                Thread.sleep(4000);
-                            }
-                            catch (InterruptedException e)
-                            {
-                                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-                            }
+                                runOnUiThread(showNav);
+                                try
+                                {
+                                    Thread.sleep(4000);
+                                }
+                                catch (InterruptedException e)
+                                {
+                                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                                }
 
-                            runOnUiThread(hideNavAgain);
-                        }
-                    });
+                                runOnUiThread(hideNavAgain);
+                            }
+                        });
 
-                    t.start();
+                        t.start();
+
+                    }
 
                 }
-
-            }
-        });
+            });
+        }
 
     }
 
