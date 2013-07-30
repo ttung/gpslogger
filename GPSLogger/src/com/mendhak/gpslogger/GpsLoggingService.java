@@ -516,6 +516,7 @@ public class GpsLoggingService extends Service implements IActionListener
 
         CheckTowerAndGpsStatus();
 
+        boolean anyProviderEnabled = false;
         if (Session.isGpsEnabled() && !AppSettings.shouldPreferCellTower())
         {
             Utilities.LogInfo("Requesting GPS location updates");
@@ -527,18 +528,24 @@ public class GpsLoggingService extends Service implements IActionListener
             gpsLocationManager.addGpsStatusListener(gpsLocationListener);
 
             Session.setUsingGps(true);
+            anyProviderEnabled = true;
         }
-        else if (Session.isTowerEnabled())
+        else
+        {
+            Session.setUsingGps(false);
+        }
+
+        if (Session.isTowerEnabled())
         {
             Utilities.LogInfo("Requesting tower location updates");
-            Session.setUsingGps(false);
             // Cell tower and wifi based
             towerLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
                     1000, 0,
                     towerLocationListener);
-
+            anyProviderEnabled = true;
         }
-        else
+
+        if (anyProviderEnabled == false)
         {
             Utilities.LogInfo("No provider available");
             Session.setUsingGps(false);

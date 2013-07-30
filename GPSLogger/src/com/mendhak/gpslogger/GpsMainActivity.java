@@ -1051,7 +1051,7 @@ public class GpsMainActivity extends SherlockActivity implements OnCheckedChange
                 txtDirection.setText(R.string.not_applicable);
             }
 
-            if (!Session.isUsingGps())
+            if (!providerName.equalsIgnoreCase("gps"))
             {
                 txtSatellites.setText(R.string.not_applicable);
                 Session.setSatelliteCount(0);
