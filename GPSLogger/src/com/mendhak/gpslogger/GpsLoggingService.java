@@ -26,10 +26,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
-import android.os.Binder;
-import android.os.Bundle;
-import android.os.IBinder;
-import android.os.SystemClock;
+import android.os.*;
 import android.widget.Toast;
 import com.mendhak.gpslogger.common.AppSettings;
 import com.mendhak.gpslogger.common.IActionListener;
@@ -64,6 +61,9 @@ public class GpsLoggingService extends Service implements IActionListener
 
     private Intent alarmIntent;
 
+    private Runnable timeoutRunnable;
+    private Handler handler;
+
     AlarmManager nextPointAlarmManager;
 
     // ---------------------------------------------------
@@ -80,6 +80,7 @@ public class GpsLoggingService extends Service implements IActionListener
     {
         Utilities.LogDebug("GpsLoggingService.onCreate");
         nextPointAlarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        handler = new Handler();
 
         Utilities.LogInfo("GPSLoggerService created");
     }
@@ -556,6 +557,14 @@ public class GpsLoggingService extends Service implements IActionListener
         }
 
         SetStatus(R.string.started);
+
+        timeoutRunnable = new Runnable() {
+            @Override
+            public void run() {
+                StopManagerAndResetAlarm();
+            }
+        };
+        handler.postDelayed(timeoutRunnable, AppSettings.getRetryInterval() * 1000);
     }
 
     /**
@@ -699,6 +708,9 @@ public class GpsLoggingService extends Service implements IActionListener
      */
     void OnLocationChanged(Location loc)
     {
+        // we have a location event.  cancel the timeout.
+        handler.removeCallbacks(timeoutRunnable);
+
         int retryTimeout = Session.getRetryTimeout();
 
         if (!Session.isStarted())
