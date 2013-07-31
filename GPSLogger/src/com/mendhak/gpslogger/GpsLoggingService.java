@@ -568,14 +568,7 @@ public class GpsLoggingService extends Service implements IActionListener
             @Override
             public void run() {
                 Utilities.LogInfo("Location services timed out without any location data");
-                if (bestLocation != null)
-                {
-                    RecordLocation(bestLocation);
-                }
-                else
-                {
-                    StopManagerAndResetAlarm();
-                }
+                MaybeRecordAndStopManagerAndResetAlarm();
             }
         };
         handler.postDelayed(timeoutRunnable, AppSettings.getRetryInterval() * 1000);
@@ -777,7 +770,7 @@ public class GpsLoggingService extends Service implements IActionListener
         // Do we immediately record because we have a good enough fix?
         if (AppSettings.getImmediateRecordMinimumAccuracyInMeters() > 0)
         {
-            if (AppSettings.getImmediateRecordMinimumAccuracyInMeters() < Math.abs(loc.getAccuracy()))
+            if (Math.abs(loc.getAccuracy()) < AppSettings.getImmediateRecordMinimumAccuracyInMeters())
             {
                 Utilities.LogDebug("got location " + loc.toString() + " which is good enough for immediate record");
                 // good enough!
@@ -850,7 +843,25 @@ public class GpsLoggingService extends Service implements IActionListener
         Session.setTotalTravelled(Session.getTotalTravelled() + distance);
     }
 
-    protected void StopManagerAndResetAlarm()
+    /**
+     * If a best location was obtained, then record that and shut down.
+     */
+    protected void MaybeRecordAndStopManagerAndResetAlarm()
+    {
+        if (bestLocation != null)
+        {
+            RecordLocation(bestLocation);
+        }
+        else
+        {
+            StopManagerAndResetAlarm();
+        }
+    }
+
+    /**
+     * This should probably not 
+     */
+    private void StopManagerAndResetAlarm()
     {
         Utilities.LogDebug("GpsLoggingService.StopManagerAndResetAlarm");
         if( !AppSettings.shouldkeepFix() )
@@ -858,16 +869,6 @@ public class GpsLoggingService extends Service implements IActionListener
             StopGpsManager();
         }
         SetAlarmForNextPoint();
-    }
-
-    protected void StopManagerAndResetAlarm(int retryInterval)
-    {
-        Utilities.LogDebug("GpsLoggingService.StopManagerAndResetAlarm_retryInterval");
-        if( !AppSettings.shouldkeepFix() )
-        {
-            StopGpsManager();
-        }
-        SetAlarmForNextPoint(retryInterval);
     }
 
     private void StopAlarm()

@@ -78,7 +78,7 @@ class GeneralLocationListener implements LocationListener, GpsStatus.Listener
         if (status == LocationProvider.OUT_OF_SERVICE)
         {
             Utilities.LogDebug(provider + " is out of service");
-            mainActivity.StopManagerAndResetAlarm();
+            mainActivity.MaybeRecordAndStopManagerAndResetAlarm();
         }
 
         if (status == LocationProvider.AVAILABLE)
@@ -89,7 +89,7 @@ class GeneralLocationListener implements LocationListener, GpsStatus.Listener
         if (status == LocationProvider.TEMPORARILY_UNAVAILABLE)
         {
             Utilities.LogDebug(provider + " is temporarily unavailable");
-            mainActivity.StopManagerAndResetAlarm();
+            mainActivity.MaybeRecordAndStopManagerAndResetAlarm();
         }
     }
 
