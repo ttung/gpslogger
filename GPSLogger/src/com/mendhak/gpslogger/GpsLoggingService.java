@@ -217,7 +217,7 @@ public class GpsLoggingService extends Service implements IActionListener
         if (AppSettings.isAutoSendEnabled() && Session.getAutoSendDelay() > 0)
         {
             Utilities.LogDebug("Setting up autosend alarm");
-            long triggerTime = System.currentTimeMillis()
+            long triggerTime = SystemClock.elapsedRealtime()
                     + (long) (Session.getAutoSendDelay() * 60 * 60 * 1000);
 
             alarmIntent = new Intent(getApplicationContext(), AlarmReceiver.class);
@@ -226,7 +226,7 @@ public class GpsLoggingService extends Service implements IActionListener
             PendingIntent sender = PendingIntent.getBroadcast(this, 0, alarmIntent,
                     PendingIntent.FLAG_UPDATE_CURRENT);
             AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
-            am.set(AlarmManager.RTC_WAKEUP, triggerTime, sender);
+            am.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, triggerTime, sender);
             Utilities.LogDebug("Alarm has been set");
 
         }
@@ -407,6 +407,7 @@ public class GpsLoggingService extends Service implements IActionListener
         // Email log file before setting location info to null
         AutoSendLogFileOnStop();
         CancelAlarm();
+        Session.setLatestTimeStamp(0L);
         Session.setCurrentLocationInfo(null);
         stopForeground(true);
 
@@ -733,18 +734,17 @@ public class GpsLoggingService extends Service implements IActionListener
         Utilities.LogDebug("GpsLoggingService.OnLocationChanged");
 
 
-        long currentTimeStamp = System.currentTimeMillis();
         long now = SystemClock.elapsedRealtime();
 
         // Wait some time even on 0 frequency so that the UI doesn't lock up
 
-        if ((currentTimeStamp - Session.getLatestTimeStamp()) < 1000)
+        if ((now - Session.getLatestTimeStamp()) < 1000)
         {
             return;
         }
 
         // Don't do anything until the user-defined time has elapsed
-        if ((currentTimeStamp - Session.getLatestTimeStamp()) < (AppSettings.getMinimumSeconds() * 1000))
+        if ((now - Session.getLatestTimeStamp()) < (AppSettings.getMinimumSeconds() * 1000))
         {
             return;
         }
@@ -818,7 +818,7 @@ public class GpsLoggingService extends Service implements IActionListener
     {
         Utilities.LogInfo("New location obtained");
         ResetCurrentFileName(false);
-        Session.setLatestTimeStamp(System.currentTimeMillis());
+        Session.setLatestTimeStamp(SystemClock.elapsedRealtime());
         Session.setCurrentLocationInfo(loc);
         SetDistanceTraveled(loc);
         Notify();

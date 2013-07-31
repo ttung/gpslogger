@@ -36,7 +36,6 @@ import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import com.actionbarsherlock.app.SherlockActivity;
-import com.actionbarsherlock.view.*;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.mendhak.gpslogger.common.AppSettings;
@@ -969,7 +968,7 @@ public class GpsMainActivity extends SherlockActivity implements OnCheckedChange
                 providerName = getString(R.string.providername_celltower);
             }
 
-            tvDateTime.setText(new Date(Session.getLatestTimeStamp()).toLocaleString()
+            tvDateTime.setText(new Date(loc.getTime()).toLocaleString()
                     + getString(R.string.providername_using, providerName));
             tvLatitude.setText(String.valueOf(loc.getLatitude()));
             tvLongitude.setText(String.valueOf(loc.getLongitude()));
