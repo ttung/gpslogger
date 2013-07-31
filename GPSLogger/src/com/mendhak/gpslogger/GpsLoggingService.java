@@ -27,7 +27,6 @@ import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.*;
-import android.widget.Toast;
 import com.mendhak.gpslogger.common.AppSettings;
 import com.mendhak.gpslogger.common.IActionListener;
 import com.mendhak.gpslogger.common.Session;
@@ -63,6 +62,9 @@ public class GpsLoggingService extends Service implements IActionListener
 
     private Runnable timeoutRunnable;
     private Handler handler;
+
+    private Location bestLocation;
+    private long startTime;
 
     AlarmManager nextPointAlarmManager;
 
@@ -499,6 +501,9 @@ public class GpsLoggingService extends Service implements IActionListener
     {
         Utilities.LogDebug("GpsLoggingService.StartGpsManager");
 
+        bestLocation = null;
+        startTime = SystemClock.elapsedRealtime();
+
         GetPreferences();
 
         if (gpsLocationListener == null)
@@ -561,7 +566,15 @@ public class GpsLoggingService extends Service implements IActionListener
         timeoutRunnable = new Runnable() {
             @Override
             public void run() {
-                StopManagerAndResetAlarm();
+                Utilities.LogInfo("Location services timed out without any location data");
+                if (bestLocation != null)
+                {
+                    RecordLocation(bestLocation);
+                }
+                else
+                {
+                    StopManagerAndResetAlarm();
+                }
             }
         };
         handler.postDelayed(timeoutRunnable, AppSettings.getRetryInterval() * 1000);
@@ -583,6 +596,8 @@ public class GpsLoggingService extends Service implements IActionListener
      */
     private void StopGpsManager()
     {
+        // we stopped the location managers.  cancel the timeout.
+        handler.removeCallbacks(timeoutRunnable);
 
         Utilities.LogDebug("GpsLoggingService.StopGpsManager");
 
@@ -708,11 +723,6 @@ public class GpsLoggingService extends Service implements IActionListener
      */
     void OnLocationChanged(Location loc)
     {
-        // we have a location event.  cancel the timeout.
-        handler.removeCallbacks(timeoutRunnable);
-
-        int retryTimeout = Session.getRetryTimeout();
-
         if (!Session.isStarted())
         {
             Utilities.LogDebug("OnLocationChanged called, but Session.isStarted is false");
@@ -724,6 +734,7 @@ public class GpsLoggingService extends Service implements IActionListener
 
 
         long currentTimeStamp = System.currentTimeMillis();
+        long now = SystemClock.elapsedRealtime();
 
         // Wait some time even on 0 frequency so that the UI doesn't lock up
 
@@ -741,26 +752,14 @@ public class GpsLoggingService extends Service implements IActionListener
         // Don't do anything until the user-defined accuracy is reached
         if (AppSettings.getMinimumAccuracyInMeters() > 0)
         {
-          if(AppSettings.getMinimumAccuracyInMeters() < Math.abs(loc.getAccuracy()))
+            if (AppSettings.getMinimumAccuracyInMeters() < Math.abs(loc.getAccuracy()))
             {
-                if(retryTimeout < 50)
-                {
-                    Session.setRetryTimeout(retryTimeout+1);
-                    SetStatus("Only accuracy of " + String.valueOf(Math.floor(loc.getAccuracy())) + " reached");
-                    StopManagerAndResetAlarm(AppSettings.getRetryInterval());
-                    return;
-                }
-                else
-                {
-                    Session.setRetryTimeout(0);
-                    SetStatus("Only accuracy of " + String.valueOf(Math.floor(loc.getAccuracy())) + " reached and timeout reached");
-                    StopManagerAndResetAlarm();
-                    return;
-                }
+                // not accurate enough.
+                return;
             }
         }
 
-        //Don't do anything until the user-defined distance has been traversed
+        // Don't do anything until the user-defined distance has been traversed
         if (AppSettings.getMinimumDistanceInMeters() > 0 && Session.hasValidLocation())
         {
 
@@ -776,7 +775,36 @@ public class GpsLoggingService extends Service implements IActionListener
 
         }
 
+        // Has enough time passed to record?
+        if (now - startTime >= AppSettings.getRetryInterval() * 1000)
+        {
+            // yes.  use the best location.
+            if (bestLocation != null &&
+                Math.abs(bestLocation.getAccuracy()) < Math.abs(loc.getAccuracy()))
+            {
+                RecordLocation(bestLocation);
+            }
+            else
+            {
+                RecordLocation(loc);
+            }
+        }
 
+        Utilities.LogDebug("got location " + loc.toString() +
+                " (best=" + (bestLocation == null ? "null" : bestLocation.toString()) + ")");
+        // nope.  save if this is the best location and continue talking to the location services.
+        if (bestLocation == null ||
+                Math.abs(loc.getAccuracy()) < Math.abs(bestLocation.getAccuracy()))
+        {
+            bestLocation = loc;
+        }
+    }
+
+    /**
+     * Records a location, and shuts down the location listeners if necessary.
+     */
+    private void RecordLocation(Location loc)
+    {
         Utilities.LogInfo("New location obtained");
         ResetCurrentFileName(false);
         Session.setLatestTimeStamp(System.currentTimeMillis());
