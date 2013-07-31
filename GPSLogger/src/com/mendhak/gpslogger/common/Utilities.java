@@ -170,6 +170,20 @@ public class Utilities
         }
 
 
+        String minimumImmediateRecordAccuracyString = prefs.getString(
+                "accuracy_before_immediate_logging", "0");
+
+        if (minimumImmediateRecordAccuracyString != null && minimumImmediateRecordAccuracyString.length() > 0)
+        {
+            AppSettings.setImmediateRecordMinimumAccuracyInMeters(Integer
+                    .valueOf(minimumImmediateRecordAccuracyString));
+        }
+        else
+        {
+            AppSettings.setImmediateRecordMinimumAccuracyInMeters(0);
+        }
+
+
         String minimumSecondsString = prefs.getString("time_before_logging",
                 "60");
 

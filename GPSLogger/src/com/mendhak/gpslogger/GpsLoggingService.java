@@ -772,7 +772,18 @@ public class GpsLoggingService extends Service implements IActionListener
                 StopManagerAndResetAlarm();
                 return;
             }
+        }
 
+        // Do we immediately record because we have a good enough fix?
+        if (AppSettings.getImmediateRecordMinimumAccuracyInMeters() > 0)
+        {
+            if (AppSettings.getImmediateRecordMinimumAccuracyInMeters() < Math.abs(loc.getAccuracy()))
+            {
+                Utilities.LogDebug("got location " + loc.toString() + " which is good enough for immediate record");
+                // good enough!
+                RecordLocation(loc);
+                return;
+            }
         }
 
         // Has enough time passed to record?

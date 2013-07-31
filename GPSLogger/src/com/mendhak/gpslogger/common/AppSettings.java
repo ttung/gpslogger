@@ -48,6 +48,7 @@ public class AppSettings extends Application
     private static boolean debugToFile;
     private static int minimumDistance;
     private static int minimumAccuracy;
+    private static int immediateRecordMinimumAccuracy;
     private static boolean shouldSendZipFile;
 
     private static boolean LogToOpenGTS;
@@ -246,7 +247,8 @@ public class AppSettings extends Application
         AppSettings.minimumDistance = minimumDistance;
     }
 
-         /**
+
+    /**
      * @return the minimumAccuracy
      */
     public static int getMinimumAccuracyInMeters()
@@ -260,6 +262,23 @@ public class AppSettings extends Application
     static void setMinimumAccuracyInMeters(int minimumAccuracy)
     {
         AppSettings.minimumAccuracy = minimumAccuracy;
+    }
+
+
+    /**
+     * @return the minimum accuracy at which we will immediately record the location.
+     */
+    public static int getImmediateRecordMinimumAccuracyInMeters()
+    {
+        return immediateRecordMinimumAccuracy;
+    }
+
+    /**
+     * @param immediateRecordMinimumAccuracyInMeters the minimum accuracy at which we will immediately record the location.
+     */
+    static void setImmediateRecordMinimumAccuracyInMeters(int immediateRecordMinimumAccuracyInMeters)
+    {
+        AppSettings.immediateRecordMinimumAccuracy = immediateRecordMinimumAccuracyInMeters;
     }
 
 

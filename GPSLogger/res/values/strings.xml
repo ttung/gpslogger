@@ -178,10 +178,12 @@
     <string name="accuracy_before_logging_summary">Which min. accuracy to for logging. Use 0 to log all
         points.
     </string>
-    <string name="timeout_time_title">Timeout</string>
-    <string name="timeout_time_summary">How long the GPS stays on looking for a fix before giving up. Use 0 for no timeout</string>
-    <string name="timeout_time_dialog_title">Time in seconds</string>
-    <string name="timeout_time_hint">Enter seconds (max 9999)</string>
+    <string name="accuracy_before_immediate_logging_title">
+      Accuracy before immediate logging
+    </string>
+    <string name="accuracy_before_immediate_logging_summary">
+      The minimum accuracy before we immediately accept a location. Use 0 to always scan for the full timeout period.
+    </string>
 
     <string name="useimperial_title">Use Imperial units</string>
     <string name="useimperial_summary">Use feet, miles and pints, none of that newfangled metric stuff.</string>
