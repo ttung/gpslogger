@@ -767,6 +767,14 @@ public class GpsLoggingService extends Service implements IActionListener
             }
         }
 
+        // send the data to the main form.
+        if (IsMainFormVisible())
+        {
+            mainServiceClient.OnLocationUpdate(loc);
+            SetStatus(getString(R.string.fix_obtained_continued));
+        }
+
+
         // Do we immediately record because we have a good enough fix?
         if (AppSettings.getImmediateRecordMinimumAccuracyInMeters() > 0)
         {

@@ -249,6 +249,7 @@
     </string>
 
     <string name="fix_obtained">Fix obtained</string>
+    <string name="fix_obtained_continued">Fix obtained, continuing to scan</string>
     <string name="started_waiting">GPS started, waiting for fix</string>
     <string name="gps_stopped">GPS paused</string>
     <string name="stopped">Stopped</string>
