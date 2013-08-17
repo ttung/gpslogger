@@ -571,7 +571,10 @@ public class GpsLoggingService extends Service implements IActionListener
         timeoutRunnable = new Runnable() {
             @Override
             public void run() {
-                Utilities.LogInfo("Location services timed out without any location data");
+                if (bestLocation == null)
+                {
+                    Utilities.LogInfo("Location services timed out without any location data");
+                }
                 MaybeRecordAndStopManagerAndResetAlarm();
             }
         };
@@ -766,7 +769,7 @@ public class GpsLoggingService extends Service implements IActionListener
             return;
         }
 
-        Utilities.LogDebug("GpsLoggingService.OnLocationChanged");
+        Utilities.LogDebug("GpsLoggingService.OnLocationChanged (location=" + loc.toString() + ")");
 
 
         long now = SystemClock.elapsedRealtime();
