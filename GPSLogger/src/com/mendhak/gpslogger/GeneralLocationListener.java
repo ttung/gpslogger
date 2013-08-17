@@ -78,18 +78,19 @@ class GeneralLocationListener implements LocationListener, GpsStatus.Listener
         if (status == LocationProvider.OUT_OF_SERVICE)
         {
             Utilities.LogDebug(provider + " is out of service");
-            mainActivity.MaybeRecordAndStopManagerAndResetAlarm();
+            mainActivity.MarkOutOfService(provider);
         }
 
         if (status == LocationProvider.AVAILABLE)
         {
             Utilities.LogDebug(provider + " is available");
+            mainActivity.MarkInService(provider);
         }
 
         if (status == LocationProvider.TEMPORARILY_UNAVAILABLE)
         {
             Utilities.LogDebug(provider + " is temporarily unavailable");
-            mainActivity.MaybeRecordAndStopManagerAndResetAlarm();
+            mainActivity.MarkOutOfService(provider);
         }
     }
 

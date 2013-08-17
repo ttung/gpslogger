@@ -55,6 +55,8 @@ public class GpsLoggingService extends Service implements IActionListener
     // ---------------------------------------------------
     private GeneralLocationListener gpsLocationListener;
     private GeneralLocationListener towerLocationListener;
+    private boolean gpsLocationManagerAvailable;
+    private boolean towerLocationManagerAvailable;
     LocationManager gpsLocationManager;
     private LocationManager towerLocationManager;
 
@@ -520,6 +522,8 @@ public class GpsLoggingService extends Service implements IActionListener
 
         gpsLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         towerLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        gpsLocationManagerAvailable = true;
+        towerLocationManagerAvailable = true;
 
         CheckTowerAndGpsStatus();
 
@@ -707,6 +711,44 @@ public class GpsLoggingService extends Service implements IActionListener
         StartGpsManager();
     }
 
+    /**
+     * Marks a location manager out of service.
+     */
+    void MarkOutOfService(String provider)
+    {
+        if (LocationManager.GPS_PROVIDER.equals(provider))
+        {
+            gpsLocationManagerAvailable = false;
+        }
+        else if (LocationManager.NETWORK_PROVIDER.equals(provider))
+        {
+            towerLocationManagerAvailable = false;
+        }
+
+        if ((Session.isUsingGps() && gpsLocationManagerAvailable) ||
+            (Session.isTowerEnabled() && towerLocationManagerAvailable))
+        {
+            // something is still available.
+            return;
+        }
+
+        MaybeRecordAndStopManagerAndResetAlarm();
+    }
+
+    /**
+     * Marks a location manager as in-service.
+     */
+    void MarkInService(String provider)
+    {
+        if (LocationManager.GPS_PROVIDER.equals(provider))
+        {
+            gpsLocationManagerAvailable = true;
+        }
+        else if (LocationManager.NETWORK_PROVIDER.equals(provider))
+        {
+            towerLocationManagerAvailable = true;
+        }
+    }
 
     /**
      * This event is raised when the GeneralLocationListener has a new location.
@@ -867,7 +909,7 @@ public class GpsLoggingService extends Service implements IActionListener
     }
 
     /**
-     * This should probably not 
+     * This should probably not
      */
     private void StopManagerAndResetAlarm()
     {
