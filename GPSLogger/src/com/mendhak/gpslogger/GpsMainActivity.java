@@ -571,10 +571,7 @@ public class GpsMainActivity extends SherlockActivity implements OnCheckedChange
                         dialog.dismiss();
                         String chosenFileName = files[index];
 
-                        final Intent intent = new Intent(Intent.ACTION_SEND);
-
-                        // intent.setType("text/plain");
-                        intent.setType("*/*");
+                        final Intent intent = new Intent(Intent.ACTION_VIEW);
 
                         if (chosenFileName.equalsIgnoreCase(locationOnly))
                         {
@@ -594,12 +591,18 @@ public class GpsMainActivity extends SherlockActivity implements OnCheckedChange
                         if (chosenFileName.length() > 0
                                 && !chosenFileName.equalsIgnoreCase(locationOnly))
                         {
-                            intent.putExtra(Intent.EXTRA_STREAM,
-                                    Uri.fromFile(new File(gpxFolder, chosenFileName)));
+                            if (chosenFileName.toLowerCase().endsWith(".gpx"))
+                            {
+                                intent.setDataAndType(Uri.fromFile(new File(gpxFolder, chosenFileName)),
+                                        "application/gpx");
+                            }
+                            else
+                            {
+                                intent.setData(Uri.fromFile(new File(gpxFolder, chosenFileName)));
+                            }
                         }
 
                         startActivity(Intent.createChooser(intent, getString(R.string.sharing_via)));
-
                     }
                 });
                 dialog.show();
