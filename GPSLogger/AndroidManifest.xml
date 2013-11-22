@@ -21,7 +21,7 @@
 
     <!--suppress AndroidDomInspection -->
     <application android:icon="@drawable/gpsloggericon2"
-                 android:name="@string/app_name" android:label="@string/app_name" android:theme="@style/Theme.Sherlock">
+                 android:name=".GPSLogger" android:label="@string/app_name" android:theme="@style/Theme.Sherlock">
 
         <service android:name="com.mendhak.gpslogger.GpsLoggingService">
             <intent-filter>
