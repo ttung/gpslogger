@@ -30,8 +30,6 @@
   <string name="summary_loggingto_screen">samo na zaslonu</string>
   <string name="summary_freq_every">Pogostost:</string>
   <string name="summary_freq_max">največja</string>
-  <string name="summary_dist">Oddaljenost:</string>
-  <string name="summary_dist_regardless">največja</string>
   <string name="summary_current_filename">Datoteka:</string>
   <string name="summary_current_filename_format">%s (v mapi GPSLogger)</string>
   <string name="sharing_location_only">Samo lokacija</string>
@@ -70,8 +68,6 @@
     </string>
   <string name="retry_time_dialog_title">Čas v sekundah</string>
   <string name="retry_time_hint">Vnesite sekunde (max 9999)</string>
-  <string name="distance_before_logging_title">Oddaljenost pred vpisom</string>
-  <string name="distance_before_logging_summary">Kako daleč mora potovati pred vpisom naslednje točke. Uporabi 0 za vpis vseh točk.     </string>
   <string name="accuracy_before_logging_title">Natančnost pred vpisom</string>
   <string name="accuracy_before_logging_summary">Katera min. točnost da za vpis v dnevnik. Uporabi 0 za vpis vseh točk.     </string>
   <string name="useimperial_title">Uporabite imperialne enote</string>

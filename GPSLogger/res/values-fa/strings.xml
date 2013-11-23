@@ -29,8 +29,6 @@
   <string name="summary_loggingto_screen">فقط روی صفحه نمایش</string>
   <string name="summary_freq_every">فراواني:</string>
   <string name="summary_freq_max">حداکثر</string>
-  <string name="summary_dist">فاصله:</string>
-  <string name="summary_dist_regardless">حداکثر</string>
   <string name="summary_current_filename">پرونده:</string>
   <string name="summary_current_filename_format">%s (در پوشه \"GPS ثبات\")</string>
   <string name="sharing_location_only">مکان فقط</string>

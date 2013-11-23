@@ -319,7 +319,6 @@ public class GpsMainActivity extends SherlockActivity implements OnCheckedChange
         {
             TextView txtLoggingTo = (TextView) findViewById(R.id.txtLoggingTo);
             TextView txtFrequency = (TextView) findViewById(R.id.txtFrequency);
-            TextView txtDistance = (TextView) findViewById(R.id.txtDistance);
             TextView txtAutoEmail = (TextView) findViewById(R.id.txtAutoEmail);
 
             List<IFileLogger> loggers = FileLoggerFactory.GetFileLoggers();
@@ -354,28 +353,6 @@ public class GpsMainActivity extends SherlockActivity implements OnCheckedChange
             {
                 txtFrequency.setText(R.string.summary_freq_max);
 
-            }
-
-
-            if (AppSettings.getMinimumDistanceInMeters() > 0)
-            {
-                if (AppSettings.shouldUseImperial())
-                {
-                    int minimumDistanceInFeet = Utilities.MetersToFeet(AppSettings.getMinimumDistanceInMeters());
-                    txtDistance.setText(((minimumDistanceInFeet == 1)
-                            ? getString(R.string.foot)
-                            : String.valueOf(minimumDistanceInFeet) + getString(R.string.feet)));
-                }
-                else
-                {
-                    txtDistance.setText(((AppSettings.getMinimumDistanceInMeters() == 1)
-                            ? getString(R.string.meter)
-                            : String.valueOf(AppSettings.getMinimumDistanceInMeters()) + getString(R.string.meters)));
-                }
-            }
-            else
-            {
-                txtDistance.setText(R.string.summary_dist_regardless);
             }
 
 

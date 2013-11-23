@@ -29,8 +29,6 @@
   <string name="summary_loggingto_screen">slegs skerm</string>
   <string name="summary_freq_every">Frekwensie:</string>
   <string name="summary_freq_max">maksimum</string>
-  <string name="summary_dist">Afstand:</string>
-  <string name="summary_dist_regardless">maksimum</string>
   <string name="summary_current_filename">Lêer:</string>
   <string name="summary_current_filename_format">%s (in jou GPSLogger vouer)</string>
   <string name="sharing_location_only">Slegs ligging</string>

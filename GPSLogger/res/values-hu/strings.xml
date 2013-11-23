@@ -31,8 +31,6 @@
   <string name="summary_loggingto_screen">csak képernyőn</string>
   <string name="summary_freq_every">Frekvencia:</string>
   <string name="summary_freq_max">maximális</string>
-  <string name="summary_dist">Távolság:</string>
-  <string name="summary_dist_regardless">maximális</string>
   <string name="summary_current_filename">Fájl:</string>
   <string name="summary_current_filename_format">%s (a GPSLogger mappában)</string>
   <string name="sharing_location_only">Csak a helyzet</string>
@@ -120,8 +118,6 @@
   <string name="retry_time_summary">Ha 0 a maximális frekvencia, akkor tovább működik akkumulátorról.</string>
   <string name="retry_time_dialog_title">Idő másodpercben</string>
   <string name="retry_time_hint">Adja meg másodpercben (max 9999)</string>
-  <string name="distance_before_logging_title">Távolság bejelentkezés előtt</string>
-  <string name="distance_before_logging_summary">Ekkora elmozdulás legyen a következő bejelentkezésig. Ha az összes pont kell akkor legyen 0.     </string>
   <string name="accuracy_before_logging_title">Bejelentkezés előtti hitelesítés</string>
   <string name="accuracy_before_logging_summary">Melyik a hitelesítés legkisebb pontossága. 0-nál mindent logol     </string>
   <string name="useimperial_title">Angolszász mértékegységek használata</string>

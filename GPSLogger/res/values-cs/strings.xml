@@ -32,8 +32,6 @@
   <string name="summary_loggingto_screen">pouze displej</string>
   <string name="summary_freq_every">Frekvence:</string>
   <string name="summary_freq_max">maximum</string>
-  <string name="summary_dist">Vzdálenost:</string>
-  <string name="summary_dist_regardless">maximum</string>
   <string name="summary_current_filename">Soubor:</string>
   <string name="summary_current_filename_format">%s (ve složce GPSLogger)</string>
   <string name="sharing_location_only">Pouze umístění</string>
@@ -126,8 +124,6 @@
   <string name="retry_time_summary">Použijte 0 pro maximální frekvenci, ale pomalejší je lepší pro výdrž baterie.</string>
   <string name="retry_time_dialog_title">Čas v sekundách</string>
   <string name="retry_time_hint">Zadejte sekundy (max 9999)</string>
-  <string name="distance_before_logging_title">Vzdálenost před záznamem</string>
-  <string name="distance_before_logging_summary">Jak daleko se má jít, než se zaznamená další bod. Použijte 0 pro záznam všech bodů.     </string>
   <string name="accuracy_before_logging_title">Přesnost pro záznam</string>
   <string name="accuracy_before_logging_summary">Jakou min. přesnost pro záznam. Použijte 0 pro záznam všech bodů.</string>
   <string name="useimperial_title">Použít imperiální jednotky</string>

@@ -30,8 +30,6 @@
   <string name="summary_loggingto_screen">Nur Bildschirm</string>
   <string name="summary_freq_every">Frequenz:</string>
   <string name="summary_freq_max">Maximum</string>
-  <string name="summary_dist">Entfernung:</string>
-  <string name="summary_dist_regardless">Maximum</string>
   <string name="summary_current_filename">Datei:</string>
   <string name="summary_current_filename_format">%s (in deinem GPSLogger Verzeichnis)</string>
   <string name="sharing_location_only">Nur Orte</string>
@@ -118,14 +116,10 @@
   <string name="time_before_logging_summary">Verwende 0 als Maximalfrequenz, ist zwar langsamer, aber besser für den Akku.</string>
   <string name="time_before_logging_dialog_title">Zeit in Sekunden</string>
   <string name="time_before_logging_hint">Eingabe in Sekunden (max. 9999)</string>
-  <string name="keep_fix_summary">Vorsicht, dies senkt die Lebensdauer des Akkus erheblich. Nur für hohe Präzision bei niedrigen Frequenzen verwenden.</string>
-  <string name="keep_fix_title">GPS zwischen Fixes aktiviert lassen</string>
   <string name="retry_time_title">Zeitintervall</string>
   <string name="retry_time_summary">Verwende 0 als Maximalfrequenz. Langsamer ist aber besser für den Akku.</string>
   <string name="retry_time_dialog_title">Zeit in Sekunden</string>
   <string name="retry_time_hint">Eingabe in Sekunden (max. 9999)</string>
-  <string name="distance_before_logging_title">Entfernung vor dem Loggen</string>
-  <string name="distance_before_logging_summary">Entfernung bis der nächste Punkt geloggt wird. Verwende 0 um alle Punkte zu loggen.</string>
   <string name="accuracy_before_logging_title">Genauigkeit bevor geloggt wird</string>
   <string name="accuracy_before_logging_summary">Welche Mindestgenauigkeit wird benötigt bevor geloggt wird. Verwende 0 um alle Punkte zu loggen.</string>
   <string name="useimperial_title">﻿Imperiale Einheiten verwenden</string>

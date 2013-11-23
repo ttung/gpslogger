@@ -797,21 +797,6 @@ public class GpsLoggingService extends Service implements IActionListener
             }
         }
 
-        // Don't do anything until the user-defined distance has been traversed
-        if (AppSettings.getMinimumDistanceInMeters() > 0 && Session.hasValidLocation())
-        {
-
-            double distanceTraveled = Utilities.CalculateDistance(loc.getLatitude(), loc.getLongitude(),
-                    Session.getCurrentLatitude(), Session.getCurrentLongitude());
-
-            if (AppSettings.getMinimumDistanceInMeters() > distanceTraveled)
-            {
-                SetStatus("Only " + String.valueOf(Math.floor(distanceTraveled)) + " m traveled.");
-                StopManagerAndResetAlarm();
-                return;
-            }
-        }
-
         // send the data to the main form.
         if (IsMainFormVisible())
         {
@@ -917,10 +902,7 @@ public class GpsLoggingService extends Service implements IActionListener
     private void StopManagerAndResetAlarm()
     {
         Utilities.LogDebug("GpsLoggingService.StopManagerAndResetAlarm");
-        if( !AppSettings.shouldkeepFix() )
-        {
-            StopGpsManager();
-        }
+        StopGpsManager();
         SetAlarmForNextPoint();
     }
 

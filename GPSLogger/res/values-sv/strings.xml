@@ -30,8 +30,6 @@
   <string name="summary_loggingto_screen">endast skärm</string>
   <string name="summary_freq_every">Frekvens:</string>
   <string name="summary_freq_max">högsta</string>
-  <string name="summary_dist">Avstånd:</string>
-  <string name="summary_dist_regardless">högsta</string>
   <string name="summary_current_filename">Fil:</string>
   <string name="summary_current_filename_format">%s (i mappen GPSLogger)</string>
   <string name="sharing_location_only">Endast plats</string>
@@ -118,16 +116,11 @@
   <string name="time_before_logging_summary">Använd 0 för högsta frekvens, men långsammare är bättre för batterilivslängd.     </string>
   <string name="time_before_logging_dialog_title">Tid i sekunder</string>
   <string name="time_before_logging_hint">Ange sekunder (max 9999)</string>
-  <string name="keep_fix_summary">Observera att detta minskar batterilivslängden drastiskt. Använd endast för högre precision vid låga frekvenser.
-    </string>
-  <string name="keep_fix_title">Behåll GPS på mellan fixeringar</string>
   <string name="retry_time_title">Tidsintervall för noggrannhet</string>
   <string name="retry_time_summary">Använd 0 för maximal frekvens, men långsammare drar mindre batteri.
     </string>
   <string name="retry_time_dialog_title">Tid i sekunder</string>
   <string name="retry_time_hint">Ange sekunder (max 9999)</string>
-  <string name="distance_before_logging_title">Avstånd innan loggning</string>
-  <string name="distance_before_logging_summary">Avstånd innan en ny punkt loggas. Använd 0 för att logga alla punkter.</string>
   <string name="accuracy_before_logging_title">Noggrannhet innan loggning</string>
   <string name="accuracy_before_logging_summary">Min. noggrannhet för loggning. Använd 0 för att logga alla punkter.
     </string>

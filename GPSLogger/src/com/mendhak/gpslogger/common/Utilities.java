@@ -134,19 +134,6 @@ public class Utilities
                 false));
 
 
-        String minimumDistanceString = prefs.getString(
-                "distance_before_logging", "0");
-
-        if (minimumDistanceString != null && minimumDistanceString.length() > 0)
-        {
-            AppSettings.setMinimumDistanceInMeters(Integer
-                    .valueOf(minimumDistanceString));
-        }
-        else
-        {
-            AppSettings.setMinimumDistanceInMeters(0);
-        }
-
         String minimumAccuracyString = prefs.getString(
                 "accuracy_before_logging", "0");
 
@@ -162,9 +149,6 @@ public class Utilities
 
         if (AppSettings.shouldUseImperial())
         {
-            AppSettings.setMinimumDistanceInMeters(Utilities.FeetToMeters(AppSettings
-                    .getMinimumDistanceInMeters()));
-
             AppSettings.setMinimumAccuracyInMeters(Utilities.FeetToMeters(AppSettings
                     .getMinimumAccuracyInMeters()));
         }
@@ -196,9 +180,6 @@ public class Utilities
         {
             AppSettings.setMinimumSeconds(60);
         }
-
-        AppSettings.setKeepFix(prefs.getBoolean("keep_fix",
-                false));
 
         String retryIntervalString = prefs.getString("retry_time",
                 "60");

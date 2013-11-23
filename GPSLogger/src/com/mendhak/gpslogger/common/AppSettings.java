@@ -32,7 +32,6 @@ public class AppSettings extends Application
     private static boolean logToPlainText;
     private static boolean showInNotificationBar;
     private static int minimumSeconds;
-    private static boolean keepFix;
     private static int retryInterval;
     private static String newFileCreation;
     private static Float autoSendDelay = 0f;
@@ -46,7 +45,6 @@ public class AppSettings extends Application
     private static String autoEmailTargets;
     private static boolean smtpSsl;
     private static boolean debugToFile;
-    private static int minimumDistance;
     private static int minimumAccuracy;
     private static int immediateRecordMinimumAccuracy;
     private static boolean shouldSendZipFile;
@@ -197,24 +195,7 @@ public class AppSettings extends Application
         AppSettings.minimumSeconds = minimumSeconds;
     }
 
-
     /**
-     * @return the keepFix
-     */
-    public static boolean shouldkeepFix()
-    {
-        return keepFix;
-    }
-
-    /**
-     * @param keepFix the keepFix to set
-     */
-    static void setKeepFix(boolean keepFix)
-    {
-        AppSettings.keepFix = keepFix;
-    }
-    
-          /**
      * @return the retryInterval
      */
     public static int getRetryInterval()
@@ -228,23 +209,6 @@ public class AppSettings extends Application
     static void setRetryInterval(int retryInterval)
     {
         AppSettings.retryInterval = retryInterval;
-    }
-
-
-    /**
-     * @return the minimumDistance
-     */
-    public static int getMinimumDistanceInMeters()
-    {
-        return minimumDistance;
-    }
-
-    /**
-     * @param minimumDistance the minimumDistance to set
-     */
-    static void setMinimumDistanceInMeters(int minimumDistance)
-    {
-        AppSettings.minimumDistance = minimumDistance;
     }
 
 

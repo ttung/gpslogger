@@ -44,8 +44,6 @@
     <string name="summary_loggingto_screen">screen only</string>
     <string name="summary_freq_every">Frequency:</string>
     <string name="summary_freq_max">maximum</string>
-    <string name="summary_dist">Distance:</string>
-    <string name="summary_dist_regardless">maximum</string>
     <string name="summary_current_filename">File:</string>
     <string name="summary_current_filename_format">%s (in your GPSLogger folder)</string>
 
@@ -161,19 +159,11 @@
     </string>
     <string name="time_before_logging_dialog_title">Time in seconds</string>
     <string name="time_before_logging_hint">Enter seconds (max 9999)</string>
-    <string name="keep_fix_summary">Be careful, this will dramatically decrease the battery life. Use only for
-        higher precision with low frequencies.
-    </string>
-    <string name="keep_fix_title">Keep GPS on between fixes</string>
     <string name="retry_time_title">Time interval for accuracy</string>
     <string name="retry_time_summary">Use 0 for maximum frequency, but slower is better for battery life.
     </string>
     <string name="retry_time_dialog_title">Time in seconds</string>
     <string name="retry_time_hint">Enter seconds (max 9999)</string>
-    <string name="distance_before_logging_title">Distance before logging</string>
-    <string name="distance_before_logging_summary">How far to travel before logging the next point. Use 0 to log all
-        points.
-    </string>
     <string name="accuracy_before_logging_title">Accuracy before logging</string>
     <string name="accuracy_before_logging_summary">Which min. accuracy to for logging. Use 0 to log all
         points.

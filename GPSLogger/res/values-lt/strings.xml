@@ -30,8 +30,6 @@
   <string name="summary_loggingto_screen">tik ekranas</string>
   <string name="summary_freq_every">Dažnis:</string>
   <string name="summary_freq_max">maksimumas</string>
-  <string name="summary_dist">Nuotolis:</string>
-  <string name="summary_dist_regardless">maksimumas</string>
   <string name="summary_current_filename">Failas:</string>
   <string name="summary_current_filename_format">%s (jūsų GPSLogger aplanke)</string>
   <string name="sharing_location_only">Tik vieta</string>
@@ -61,8 +59,6 @@
   <string name="time_before_logging_summary">Naudokite 0 didžiausiam dažniui, tačiau mažesnis dažnis taupo energiją.</string>
   <string name="time_before_logging_dialog_title">Laikas sekundėmis</string>
   <string name="time_before_logging_hint">Įveskite sekundes (maks. 9999)</string>
-  <string name="distance_before_logging_title">Nuotolis iki įrašymo</string>
-  <string name="distance_before_logging_summary">Kaip toli nuvykti prieš įrašant sekantį tašką. Naudokite 0, kad būtų įrašomi visi taškai.</string>
   <string name="useimperial_title">Naudotis empirinius vienetus</string>
   <string name="useimperial_summary">Naudoti pėdas, mylias ir pintas</string>
   <string name="show_notification_title">Rodyti pranešimus</string>

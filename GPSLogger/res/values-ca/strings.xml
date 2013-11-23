@@ -28,8 +28,6 @@
   <string name="summary_loggingto_screen">només pantalla</string>
   <string name="summary_freq_every">Freqüència:</string>
   <string name="summary_freq_max">màxim</string>
-  <string name="summary_dist">Distància:</string>
-  <string name="summary_dist_regardless">màxim</string>
   <string name="summary_current_filename">Arxiu:</string>
   <string name="summary_current_filename_format">%s (a la teva carpeta de GPSLogger)</string>
   <string name="sharing_location_only">Només ubicació</string>

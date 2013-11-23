@@ -30,8 +30,6 @@
   <string name="summary_loggingto_screen">лише екран</string>
   <string name="summary_freq_every">Частота:</string>
   <string name="summary_freq_max">максимум</string>
-  <string name="summary_dist">Відстань:</string>
-  <string name="summary_dist_regardless">максимум</string>
   <string name="summary_current_filename">Файл:</string>
   <string name="summary_current_filename_format">%s (в папці GPSLogger)</string>
   <string name="sharing_location_only">Розташування лише</string>
@@ -119,8 +117,6 @@
   <string name="retry_time_summary">Використовуйте 0 для максимальної частоти, але чим повільніше, тим краще для  батареї.     </string>
   <string name="retry_time_dialog_title">Час в секундах</string>
   <string name="retry_time_hint">Введіть секунди (макс. 9999)</string>
-  <string name="distance_before_logging_title">Відстань до ведення журналу</string>
-  <string name="distance_before_logging_summary">Використовуйте 0 для мінімально можливою дистанції логування. Більше - краще для батареї.</string>
   <string name="accuracy_before_logging_title">Точність до ведення журналу</string>
   <string name="accuracy_before_logging_summary">Мінімально допустима точність перед записом у журнал. Установіть 0 для всіх результатів.</string>
   <string name="useimperial_title">Імперська система мір</string>
