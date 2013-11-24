@@ -87,13 +87,13 @@ public class GpsSettingsActivity extends SherlockPreferenceActivity
 
         if (useImperial)
         {
-            accuracyBeforeLogging.setDialogTitle(R.string.settings_accuracy_in_feet);
-            accuracyBeforeLogging.getEditText().setHint(R.string.settings_enter_feet);
+            accuracyBeforeImmediateLogging.setDialogTitle(R.string.settings_accuracy_in_feet);
+            accuracyBeforeImmediateLogging.getEditText().setHint(R.string.settings_enter_feet);
         }
         else
         {
-            accuracyBeforeLogging.setDialogTitle(R.string.settings_accuracy_in_meters);
-            accuracyBeforeLogging.getEditText().setHint(R.string.settings_enter_meters);
+            accuracyBeforeImmediateLogging.setDialogTitle(R.string.settings_accuracy_in_meters);
+            accuracyBeforeImmediateLogging.getEditText().setHint(R.string.settings_enter_meters);
         }
 
 
