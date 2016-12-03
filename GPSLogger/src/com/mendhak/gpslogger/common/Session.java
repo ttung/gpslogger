@@ -36,6 +36,7 @@ public class Session extends Application
     private static boolean notificationVisible;
     private static float autoSendDelay;
     private static long latestTimeStamp;
+    private static long nextPassiveLocationElegibleTimeMillis;
     private static boolean addNewTrackSegment = true;
     private static Location currentLocationInfo;
     private static Location previousLocationInfo;
@@ -270,6 +271,22 @@ public class Session extends Application
     public static void setLatestTimeStamp(long latestTimeStamp)
     {
         Session.latestTimeStamp = latestTimeStamp;
+    }
+
+    /**
+     * @return the earliest time we will want a passive location fix.
+     */
+    public static long getNextPassiveLocationEligibleTimeMillis()
+    {
+        return nextPassiveLocationElegibleTimeMillis;
+    }
+
+    /**
+     * @param nextPassiveLocationElegibleTimeMillis the earliest time we'll want a passive location fix
+     */
+    public static void setNextPassiveLocationElegibleTimeMillis(long nextPassiveLocationElegibleTimeMillis)
+    {
+        Session.nextPassiveLocationElegibleTimeMillis = nextPassiveLocationElegibleTimeMillis;
     }
 
     /**

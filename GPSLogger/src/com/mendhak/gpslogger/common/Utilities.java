@@ -181,6 +181,19 @@ public class Utilities
             AppSettings.setMinimumSeconds(60);
         }
 
+        String minimumSecondsPassiveString = prefs.getString("time_before_passive_logging",
+                "10");
+
+        if (minimumSecondsPassiveString != null && minimumSecondsPassiveString.length() > 0)
+        {
+            AppSettings
+                    .setMinimumPassiveRecordInterval(Integer.valueOf(minimumSecondsPassiveString));
+        }
+        else
+        {
+            AppSettings.setMinimumPassiveRecordInterval(60);
+        }
+
         String retryIntervalString = prefs.getString("retry_time",
                 "60");
 

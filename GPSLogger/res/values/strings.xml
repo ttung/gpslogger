@@ -72,8 +72,10 @@
     </string>
     <string name="started">Started</string>
     <string name="providername_using">&#160;&#160;&#160;&#160;(Using %s)</string>
+    <string name="providername_update">&#160;&#160;&#160;&#160;(passive from %s)</string>
     <string name="providername_gps">GPS satellites</string>
     <string name="providername_celltower">cell towers</string>
+    <string name="providername_passive">passive</string>
     <string name="not_applicable">n/a</string>
     <string name="meters_per_second">&#160;m/s</string>
     <string name="feet_per_second">&#160;ft/s</string>
@@ -157,6 +159,7 @@
     <string name="time_before_logging_title">Time before logging</string>
     <string name="time_before_logging_summary">Use 0 for maximum frequency, but slower is better for battery life.
     </string>
+    <string name="time_before_passive_logging_title">Time before passive logging</string>
     <string name="time_before_logging_dialog_title">Time in seconds</string>
     <string name="time_before_logging_hint">Enter seconds (max 9999)</string>
     <string name="retry_time_title">Time interval for accuracy</string>

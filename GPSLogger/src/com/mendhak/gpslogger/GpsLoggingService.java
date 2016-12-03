@@ -22,8 +22,10 @@
 package com.mendhak.gpslogger;
 
 import android.app.*;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.*;
@@ -46,6 +48,8 @@ public class GpsLoggingService extends Service implements IActionListener
 {
     private static NotificationManager gpsNotifyManager;
     private static int NOTIFICATION_ID = 8675309;
+    private static String PASSIVE_ACTION = "passive_location";
+    private static String PASSIVE_KEY = "GPSLogger.passive_location";
 
     private final IBinder mBinder = new GpsLoggingBinder();
     private static IGpsLoggerServiceClient mainServiceClient;
@@ -55,14 +59,19 @@ public class GpsLoggingService extends Service implements IActionListener
     // ---------------------------------------------------
     private GeneralLocationListener gpsLocationListener;
     private GeneralLocationListener towerLocationListener;
+    private GeneralLocationListener passiveLocationListener;
+    private BroadcastReceiver passiveReceiver;
+    private PendingIntent passiveBroadcastIntent;
     private boolean gpsLocationManagerAvailable;
     private boolean towerLocationManagerAvailable;
     LocationManager gpsLocationManager;
     private LocationManager towerLocationManager;
+    private LocationManager passiveLocationManager;
 
     private Intent alarmIntent;
 
     private Runnable timeoutRunnable;
+    private Runnable startPassiveListenerRunnable;
     private Handler handler;
 
     private Location bestLocation;
@@ -243,6 +252,14 @@ public class GpsLoggingService extends Service implements IActionListener
         }
     }
 
+
+    public static boolean IsLocationFromPassiveProvider(Location loc) {
+        Bundle extras = loc.getExtras();
+
+        return (extras != null && extras.getBoolean(PASSIVE_KEY, false));
+    }
+
+
     private void CancelAlarm()
     {
         Utilities.LogDebug("GpsLoggingService.CancelAlarm");
@@ -381,8 +398,8 @@ public class GpsLoggingService extends Service implements IActionListener
         Notify();
         ResetCurrentFileName(true);
         ClearForm();
+        StartPassiveGpsListener();
         StartGpsManager();
-
     }
 
     /**
@@ -416,6 +433,7 @@ public class GpsLoggingService extends Service implements IActionListener
         RemoveNotification();
         StopAlarm();
         StopGpsManager();
+        StopPassiveGpsListener();
         StopMainActivity();
     }
 
@@ -525,6 +543,13 @@ public class GpsLoggingService extends Service implements IActionListener
         gpsLocationManagerAvailable = true;
         towerLocationManagerAvailable = true;
 
+        // don't double-listen when we're running.
+        if (passiveLocationManager != null && passiveBroadcastIntent != null)
+        {
+            handler.removeCallbacks(startPassiveListenerRunnable);
+            passiveLocationManager.removeUpdates(passiveBroadcastIntent);
+        }
+
         CheckTowerAndGpsStatus();
 
         boolean anyProviderEnabled = false;
@@ -578,7 +603,62 @@ public class GpsLoggingService extends Service implements IActionListener
                 MaybeRecordAndStopManagerAndResetAlarm();
             }
         };
+        startPassiveListenerRunnable = new Runnable() {
+            @Override
+            public void run() {
+                // accept anything now.
+                Session.setNextPassiveLocationElegibleTimeMillis(0);
+                passiveLocationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, 1000, 0,
+                        passiveBroadcastIntent);
+            }
+        };
+
         handler.postDelayed(timeoutRunnable, AppSettings.getRetryInterval() * 1000);
+    }
+
+    private void StartPassiveGpsListener() {
+        if (passiveLocationManager == null) {
+            passiveLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        }
+
+        if (passiveLocationListener == null) {
+            passiveLocationListener = new GeneralLocationListener(this);
+        }
+
+        if (passiveBroadcastIntent == null) {
+            passiveBroadcastIntent = PendingIntent.getBroadcast(this, 0,
+                    new Intent(PASSIVE_ACTION), 0);
+        }
+
+        if (passiveReceiver == null) {
+            passiveReceiver = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    Location loc = (Location) intent.getParcelableExtra(LocationManager.KEY_LOCATION_CHANGED);
+
+                    // annotate the location so we know it's from the passive provider.
+                    Bundle bundle = loc.getExtras();
+                    if (bundle == null) {
+                        bundle = new Bundle();
+                        loc.setExtras(bundle);
+                    }
+                    bundle.putBoolean(PASSIVE_KEY, true);
+                    passiveLocationListener.onLocationChanged(loc);
+                }
+            };
+        }
+
+        registerReceiver(passiveReceiver, new IntentFilter(PASSIVE_ACTION),
+                "com.mendhak.gpslogger.PASSIVE_LOCATION", null);
+        passiveLocationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, 1000, 0,
+                passiveBroadcastIntent);
+
+    }
+
+    private void StopPassiveGpsListener() {
+        handler.removeCallbacks(startPassiveListenerRunnable);
+        passiveLocationManager.removeUpdates(passiveBroadcastIntent);
+        unregisterReceiver(passiveReceiver);
     }
 
     /**
@@ -616,6 +696,12 @@ public class GpsLoggingService extends Service implements IActionListener
         }
 
         SetStatus(getString(R.string.stopped));
+
+        if (passiveLocationManager != null && passiveBroadcastIntent != null)
+        {
+            // when we are eligible for passive location updates, start the passive listener.
+            handler.postDelayed(startPassiveListenerRunnable, AppSettings.getMinimumPassiveRecordInterval() * 1000);
+        }
     }
 
     /**
@@ -781,12 +867,6 @@ public class GpsLoggingService extends Service implements IActionListener
             return;
         }
 
-        // Don't do anything until the user-defined time has elapsed
-        if ((now - Session.getLatestTimeStamp()) < (AppSettings.getMinimumSeconds() * 1000))
-        {
-            return;
-        }
-
         // Don't do anything until the user-defined accuracy is reached
         if (AppSettings.getMinimumAccuracyInMeters() > 0)
         {
@@ -797,13 +877,55 @@ public class GpsLoggingService extends Service implements IActionListener
             }
         }
 
+        // handle all the passive location data cases here.
+        if (IsLocationFromPassiveProvider(loc))
+        {
+            boolean record = false;
+
+            // not enough time has elapsed.
+            if (now < Session.getNextPassiveLocationEligibleTimeMillis())
+            {
+                return;
+            }
+
+            // two ways we can get recorded:
+            // 1) If we're more accurate than the immediate record accuracy.
+            // 2) If we've moved from the previous location more than the sum of the errors.
+            if (AppSettings.getImmediateRecordMinimumAccuracyInMeters() > 0 &&
+                Math.abs(loc.getAccuracy()) < AppSettings.getImmediateRecordMinimumAccuracyInMeters())
+            {
+                record = true;
+            }
+            else
+            {
+                Location prevLocation = Session.getCurrentLocationInfo();
+                if (prevLocation != null &&
+                    prevLocation.distanceTo(loc) >= prevLocation.getAccuracy() + loc.getAccuracy())
+                {
+                    record = true;
+                }
+            }
+
+            if (record)
+            {
+                RecordPassiveLocation(loc);
+            }
+
+            return;
+        }
+
+        // Don't do anything until the user-defined time has elapsed
+        if ((now - Session.getLatestTimeStamp()) < (AppSettings.getMinimumSeconds() * 1000))
+        {
+            return;
+        }
+
         // send the data to the main form.
         if (IsMainFormVisible())
         {
             mainServiceClient.OnLocationUpdate(loc);
             SetStatus(getString(R.string.fix_obtained_continued));
         }
-
 
         // Do we immediately record because we have a good enough fix?
         if (AppSettings.getImmediateRecordMinimumAccuracyInMeters() > 0)
@@ -843,13 +965,33 @@ public class GpsLoggingService extends Service implements IActionListener
     }
 
     /**
+     * Records a passive location.
+     */
+    private void RecordPassiveLocation(Location loc)
+    {
+        Utilities.LogInfo("New passive location obtained");
+        ResetCurrentFileName(false);
+        Session.setNextPassiveLocationElegibleTimeMillis(SystemClock.elapsedRealtime() +
+                (AppSettings.getMinimumPassiveRecordInterval() * 1000));
+        Session.setCurrentLocationInfo(loc);
+        SetDistanceTraveled(loc);
+        Notify();
+        WriteToFile(loc);
+
+        if (IsMainFormVisible())
+        {
+            mainServiceClient.OnLocationUpdate(loc);
+        }
+    }
+
+    /**
      * Records a location, and shuts down the location listeners if necessary.
      */
     private void RecordLocation(Location loc)
     {
         Utilities.LogInfo("New location obtained");
         ResetCurrentFileName(false);
-        Session.setLatestTimeStamp(SystemClock.elapsedRealtime());
+        Session.setLatestTimeStamp(SystemClock.elapsedRealtime() + loc.getTime() - System.currentTimeMillis());
         Session.setCurrentLocationInfo(loc);
         SetDistanceTraveled(loc);
         Notify();
@@ -994,6 +1136,4 @@ public class GpsLoggingService extends Service implements IActionListener
     {
         return mainServiceClient != null;
     }
-
-
 }

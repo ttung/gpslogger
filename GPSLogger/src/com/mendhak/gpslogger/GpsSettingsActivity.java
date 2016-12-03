@@ -56,19 +56,6 @@ public class GpsSettingsActivity extends SherlockPreferenceActivity
         prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         boolean useImperial = prefs.getBoolean("useImperial", false);
 
-        EditTextPreference distanceBeforeLogging = (EditTextPreference) findPreference("distance_before_logging");
-
-        if (useImperial)
-        {
-            distanceBeforeLogging.setDialogTitle(R.string.settings_distance_in_feet);
-            distanceBeforeLogging.getEditText().setHint(R.string.settings_enter_feet);
-        }
-        else
-        {
-            distanceBeforeLogging.setDialogTitle(R.string.settings_distance_in_meters);
-            distanceBeforeLogging.getEditText().setHint(R.string.settings_enter_meters);
-        }
-
         EditTextPreference accuracyBeforeLogging = (EditTextPreference) findPreference("accuracy_before_logging");
 
         if (useImperial)
@@ -100,7 +87,7 @@ public class GpsSettingsActivity extends SherlockPreferenceActivity
 
 
         CheckBoxPreference imperialCheckBox = (CheckBoxPreference) findPreference("useImperial");
-        imperialCheckBox.setOnPreferenceChangeListener(new ImperialPreferenceChangeListener(prefs, distanceBeforeLogging, accuracyBeforeLogging));
+        imperialCheckBox.setOnPreferenceChangeListener(new ImperialPreferenceChangeListener(prefs, accuracyBeforeLogging));
 
 
         Preference enableDisablePref = findPreference("enableDisableGps");
@@ -210,14 +197,12 @@ public class GpsSettingsActivity extends SherlockPreferenceActivity
 
     private class ImperialPreferenceChangeListener implements Preference.OnPreferenceChangeListener
     {
-        EditTextPreference distanceBeforeLogging;
         EditTextPreference accuracyBeforeLogging;
         SharedPreferences prefs;
 
-        public ImperialPreferenceChangeListener(SharedPreferences prefs, EditTextPreference distanceBeforeLogging, EditTextPreference accuracyBeforeLogging)
+        public ImperialPreferenceChangeListener(SharedPreferences prefs, EditTextPreference accuracyBeforeLogging)
         {
             this.prefs = prefs;
-            this.distanceBeforeLogging = accuracyBeforeLogging;
             this.accuracyBeforeLogging = accuracyBeforeLogging;
         }
 
@@ -246,19 +231,7 @@ public class GpsSettingsActivity extends SherlockPreferenceActivity
 
                     boolean useImp = Boolean.parseBoolean(newValue.toString());
 
-                    String minimumDistanceString = prefs.getString("distance_before_logging", "0");
                     String minimumAccuracyString = prefs.getString("accuracy_before_logging", "0");
-
-                    int minimumDistance;
-
-                    if (minimumDistanceString != null && minimumDistanceString.length() > 0)
-                    {
-                        minimumDistance = Integer.valueOf(minimumDistanceString);
-                    }
-                    else
-                    {
-                        minimumDistance = 0;
-                    }
 
                     int minimumAccuracy;
 
@@ -275,11 +248,6 @@ public class GpsSettingsActivity extends SherlockPreferenceActivity
 
                     if (useImp)
                     {
-                        distanceBeforeLogging.setDialogTitle(R.string.settings_distance_in_feet);
-                        distanceBeforeLogging.getEditText().setHint(R.string.settings_enter_feet);
-
-                        minimumDistance = Utilities.MetersToFeet(minimumDistance);
-
                         accuracyBeforeLogging.setDialogTitle(R.string.settings_accuracy_in_feet);
                         accuracyBeforeLogging.getEditText().setHint(R.string.settings_enter_feet);
 
@@ -287,28 +255,15 @@ public class GpsSettingsActivity extends SherlockPreferenceActivity
                     }
                     else
                     {
-                        minimumDistance = Utilities.FeetToMeters(minimumDistance);
-                        distanceBeforeLogging.setDialogTitle(R.string.settings_distance_in_meters);
-                        distanceBeforeLogging.getEditText().setHint(R.string.settings_enter_meters);
-
                         minimumAccuracy = Utilities.FeetToMeters(minimumAccuracy);
                         accuracyBeforeLogging.setDialogTitle(R.string.settings_accuracy_in_meters);
                         accuracyBeforeLogging.getEditText().setHint(R.string.settings_enter_meters);
-
-
-                    }
-
-                    if (minimumDistance >= 9999)
-                    {
-                        minimumDistance = 9999;
                     }
 
                     if (minimumAccuracy >= 9999)
                     {
                         minimumAccuracy = 9999;
                     }
-
-                    editor.putString("distance_before_logging", String.valueOf(minimumDistance));
 
                     editor.putString("accuracy_before_logging", String.valueOf(minimumAccuracy));
                     editor.commit();

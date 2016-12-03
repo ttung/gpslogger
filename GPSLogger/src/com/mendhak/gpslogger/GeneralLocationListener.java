@@ -39,8 +39,6 @@ class GeneralLocationListener implements LocationListener, GpsStatus.Listener
      */
     public void onLocationChanged(Location loc)
     {
-
-
         try
         {
             if (loc != null)

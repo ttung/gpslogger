@@ -32,6 +32,7 @@ public class AppSettings extends Application
     private static boolean logToPlainText;
     private static boolean showInNotificationBar;
     private static int minimumSeconds;
+    private static int minimumPassiveRecordInterval;
     private static int retryInterval;
     private static String newFileCreation;
     private static Float autoSendDelay = 0f;
@@ -188,12 +189,30 @@ public class AppSettings extends Application
     }
 
     /**
+     * @param minimumPassiveRecordIntervalSeconds the minimum amount of time in seconds between passive location records.
+     */
+    static void setMinimumPassiveRecordInterval(int minimumPassiveRecordIntervalSeconds)
+    {
+        AppSettings.minimumPassiveRecordInterval = minimumPassiveRecordIntervalSeconds;
+    }
+
+
+    /**
+     * @return the minimum amount of time in seconds between passive location records.
+     */
+    public static int getMinimumPassiveRecordInterval()
+    {
+        return minimumPassiveRecordInterval;
+    }
+
+    /**
      * @param minimumSeconds the minimumSeconds to set
      */
     static void setMinimumSeconds(int minimumSeconds)
     {
         AppSettings.minimumSeconds = minimumSeconds;
     }
+
 
     /**
      * @return the retryInterval

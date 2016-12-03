@@ -26,6 +26,7 @@ import android.app.Dialog;
 import android.content.*;
 import android.content.pm.PackageInfo;
 import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -939,17 +940,26 @@ public class GpsMainActivity extends SherlockActivity implements OnCheckedChange
             TextView txtTravelled = (TextView) findViewById(R.id.txtDistanceTravelled);
             String providerName = loc.getProvider();
 
-            if (providerName.equalsIgnoreCase("gps"))
+            if (LocationManager.GPS_PROVIDER.equals(providerName))
             {
                 providerName = getString(R.string.providername_gps);
             }
-            else
+            else if (LocationManager.NETWORK_PROVIDER.equals(providerName))
             {
                 providerName = getString(R.string.providername_celltower);
             }
 
+            if (GpsLoggingService.IsLocationFromPassiveProvider(loc))
+            {
+                providerName = getString(R.string.providername_update, providerName);
+            }
+            else
+            {
+                providerName = getString(R.string.providername_using, providerName);
+            }
+
             tvDateTime.setText(new Date(loc.getTime()).toLocaleString()
-                    + getString(R.string.providername_using, providerName));
+                    + providerName);
             tvLatitude.setText(String.valueOf(loc.getLatitude()));
             tvLongitude.setText(String.valueOf(loc.getLongitude()));
 
