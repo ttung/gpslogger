@@ -144,6 +144,7 @@
     <string name="log_plain_text_summary">Creates a plain text file in the GPSLogger folder on the SD card.</string>
     <string name="new_file_creation_title">New file creation</string>
     <string name="new_file_creation_summary">Whether to create a new file once a day or each time you start.</string>
+    <string name="new_file_creation_onceamonth">Once a month</string>
     <string name="new_file_creation_onceaday">Once a day</string>
     <string name="new_file_creation_everystart">Every time I start</string>
     <string name="new_file_creation_static">Fixed file</string>

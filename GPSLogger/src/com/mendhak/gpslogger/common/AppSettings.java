@@ -25,6 +25,7 @@ public class AppSettings extends Application
     // User Preferences
     // ---------------------------------------------------
     private static boolean useImperial = false;
+    private static boolean newFileOnceAMonth;
     private static boolean newFileOnceADay;
     private static boolean preferCellTower;
     private static boolean logToKml;
@@ -86,6 +87,22 @@ public class AppSettings extends Application
     static void setUseImperial(boolean useImperial)
     {
         AppSettings.useImperial = useImperial;
+    }
+
+    /**
+     * @return the newFileOnceAMonth
+     */
+    public static boolean shouldCreateNewFileOnceAMonth()
+    {
+        return newFileOnceAMonth;
+    }
+
+    /**
+     * @param newFileOnceAMonth the newFileOnceAMonth to set
+     */
+    static void setNewFileOnceAMonth(boolean newFileOnceAMonth)
+    {
+        AppSettings.newFileOnceAMonth = newFileOnceAMonth;
     }
 
     /**

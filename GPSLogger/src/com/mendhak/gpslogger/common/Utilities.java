@@ -212,16 +212,25 @@ public class Utilities
 
         if (AppSettings.getNewFileCreation().equals("onceaday"))
         {
+            AppSettings.setNewFileOnceAMonth(true);
+            AppSettings.setNewFileOnceADay(false);
+            AppSettings.setStaticFile(false);
+        }
+        else if (AppSettings.getNewFileCreation().equals("onceaday"))
+        {
+            AppSettings.setNewFileOnceAMonth(false);
             AppSettings.setNewFileOnceADay(true);
             AppSettings.setStaticFile(false);
         }
         else if(AppSettings.getNewFileCreation().equals("static"))
         {
+            AppSettings.setNewFileOnceAMonth(false);
             AppSettings.setStaticFile(true);
             AppSettings.setStaticFileName(prefs.getString("new_file_static_name","gpslogger"));
         }
         else
         {
+            AppSettings.setNewFileOnceAMonth(false);
             AppSettings.setNewFileOnceADay(false);
             AppSettings.setStaticFile(false);
         }

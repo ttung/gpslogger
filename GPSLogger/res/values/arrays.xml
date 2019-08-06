@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 <string-array name="filecreation_entries">
-   <item>@string/new_file_creation_onceaday</item>
+	<item>@string/new_file_creation_onceamonth</item>
+	<item>@string/new_file_creation_onceaday</item>
    <item>@string/new_file_creation_everystart</item>
    <item>@string/new_file_creation_static</item>
 </string-array>

@@ -43,6 +43,7 @@ import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 public class GpsLoggingService extends Service implements IActionListener
 {
@@ -719,10 +720,19 @@ public class GpsLoggingService extends Service implements IActionListener
             newFileName = AppSettings.getStaticFileName();
             Session.setCurrentFileName(AppSettings.getStaticFileName());
         }
+        else if (AppSettings.shouldCreateNewFileOnceAMonth())
+        {
+            // 20100114.gpx
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMM");
+            sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+            newFileName = sdf.format(new Date());
+            Session.setCurrentFileName(newFileName);
+        }
         else if (AppSettings.shouldCreateNewFileOnceADay())
         {
             // 20100114.gpx
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+            sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
             newFileName = sdf.format(new Date());
             Session.setCurrentFileName(newFileName);
         }
@@ -730,6 +740,7 @@ public class GpsLoggingService extends Service implements IActionListener
         {
             // 20100114183329.gpx
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+            sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
             newFileName = sdf.format(new Date());
             Session.setCurrentFileName(newFileName);
         }
