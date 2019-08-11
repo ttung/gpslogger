@@ -74,6 +74,12 @@ public class GpsLoggingService extends Service  {
     private GeneralLocationListener gpsLocationListener;
     private GeneralLocationListener towerLocationListener;
     private GeneralLocationListener passiveLocationListener;
+    // when true, that means we are trying to listen to this location provider.
+    private boolean gpsLocationActive;
+    private boolean towerLocationActive;
+    // when true, that means this location provider is available.
+    private boolean gpsLocationAvailable;
+    private boolean towerLocationAvailable;
     private Intent alarmIntent;
     private Handler handler = new Handler();
 
@@ -621,31 +627,35 @@ public class GpsLoggingService extends Service  {
             gpsLocationManager.addGpsStatusListener(gpsLocationListener);
             gpsLocationManager.addNmeaListener(gpsLocationListener);
 
-            session.setUsingGps(true);
-            startAbsoluteTimer();
+            gpsLocationActive = true;
+            gpsLocationAvailable = true;
+        } else {
+            gpsLocationActive = false;
         }
 
-        if (session.isTowerEnabled() &&  ( preferenceHelper.shouldLogNetworkLocations() || !session.isGpsEnabled() ) ) {
+        if (session.isTowerEnabled() && preferenceHelper.shouldLogNetworkLocations()) {
             LOG.info("Requesting cell and wifi location updates");
-            session.setUsingGps(false);
             // Cell tower and wifi based
             towerLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 0, towerLocationListener);
 
-            startAbsoluteTimer();
+            towerLocationActive = true;
+            towerLocationAvailable = true;
+        } else {
+            towerLocationActive = false;
         }
 
-        if(!session.isTowerEnabled() && !session.isGpsEnabled()) {
-            LOG.error("No provider available!");
-            session.setUsingGps(false);
+        if (!gpsLocationActive && !towerLocationActive) {
+            LOG.error("No requested provider available!");
             LOG.error(getString(R.string.gpsprovider_unavailable));
             stopLogging();
             setLocationServiceUnavailable();
             return;
         }
 
+        startAbsoluteTimer();
+
         if(!preferenceHelper.shouldLogNetworkLocations() && !preferenceHelper.shouldLogSatelliteLocations() && !preferenceHelper.shouldLogPassiveLocations()){
             LOG.error("No location provider selected!");
-            session.setUsingGps(false);
             stopLogging();
             return;
         }
@@ -773,6 +783,38 @@ public class GpsLoggingService extends Service  {
         LOG.debug("Restarting location managers");
         stopGpsManager();
         startGpsManager();
+    }
+
+    /**
+     * Marks a location manager out of service.
+     */
+    void markOutOfService(String provider) {
+        if (LocationManager.GPS_PROVIDER.equals(provider)) {
+            gpsLocationAvailable = false;
+        } else if (LocationManager.NETWORK_PROVIDER.equals(provider)) {
+            towerLocationAvailable = false;
+        }
+
+        if ((gpsLocationActive && gpsLocationAvailable) ||
+            (towerLocationActive && towerLocationAvailable)) {
+            // something is still available.
+            return;
+        }
+
+        // nothing we are listening for is available, give up.
+        stopManagerAndResetAlarm();
+    }
+
+    /**
+     * Marks a location manager as in-service.
+     */
+    void markInService(String provider)
+    {
+        if (LocationManager.GPS_PROVIDER.equals(provider)) {
+            gpsLocationAvailable = true;
+        } else if (LocationManager.NETWORK_PROVIDER.equals(provider)) {
+            towerLocationAvailable = true;
+        }
     }
 
     /**

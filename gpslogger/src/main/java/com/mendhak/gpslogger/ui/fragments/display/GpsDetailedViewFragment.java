@@ -375,7 +375,7 @@ public class GpsDetailedViewFragment extends GenericViewFragment {
             txtDirection.setText(R.string.not_applicable);
         }
 
-        if (!session.isUsingGps()) {
+        if (!LocationManager.GPS_PROVIDER.equals(locationInfo.getProvider())) {
             txtSatellites.setText(R.string.not_applicable);
         }
 

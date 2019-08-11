@@ -111,20 +111,6 @@ public class Session {
     }
 
     /**
-     * @return the isUsingGps
-     */
-    public boolean isUsingGps() {
-        return Boolean.valueOf(get("isUsingGps", "false"));
-    }
-
-    /**
-     * @param isUsingGps the isUsingGps to set
-     */
-    public void setUsingGps(boolean isUsingGps) {
-        set("isUsingGps", String.valueOf(isUsingGps));
-    }
-
-    /**
      * @return the currentFileName (without extension)
      */
     public String getCurrentFileName() {
