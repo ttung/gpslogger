@@ -576,7 +576,7 @@ public class GpsLoggingService extends Service  {
         if(preferenceHelper.shouldLogPassiveLocations()){
             LOG.debug("Starting passive location listener");
             if(passiveLocationListener== null){
-                passiveLocationListener = new GeneralLocationListener(this, BundleConstants.PASSIVE);
+                passiveLocationListener = new GeneralLocationListener(this, LocationManager.PASSIVE_PROVIDER);
             }
             passiveLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
             passiveLocationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, 1000, 0, passiveLocationListener);
@@ -789,7 +789,8 @@ public class GpsLoggingService extends Service  {
             return;
         }
 
-        boolean isPassiveLocation = loc.getExtras().getBoolean(BundleConstants.PASSIVE);
+        boolean isPassiveLocation = LocationManager.PASSIVE_PROVIDER.equalsIgnoreCase(
+                loc.getExtras().getString(BundleConstants.LISTENER));
         long currentTimeStamp = System.currentTimeMillis();
 
         LOG.debug("Has description? " + session.hasDescription() + ", Single point? " + session.isSinglePointMode() + ", Last timestamp: " + session.getLatestTimeStamp());

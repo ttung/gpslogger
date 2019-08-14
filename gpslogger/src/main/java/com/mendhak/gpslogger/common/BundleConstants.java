@@ -12,7 +12,6 @@ public class BundleConstants {
     public static final String GEOIDHEIGHT = "GEOIDHEIGHT";
     public static final String AGEOFDGPSDATA = "AGEOFDGPSDATA";
     public static final String DGPSID = "DGPSID";
-    public static final String PASSIVE = "PASSIVE";
     public static final String LISTENER = "LISTENER";
     public static final String SATELLITES_FIX = "SATELLITES_FIX";
     public static final String DETECTED_ACTIVITY = "DETECTED_ACTIVITY";
